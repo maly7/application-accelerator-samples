@@ -25,37 +25,37 @@ This section provides a fast track installation of the "simplest" configuration 
 * Create Apps
 
 ```shell
-    az spring app create -n where-for-dinner-availability
-    az spring app create -n where-for-dinner-crawler
-    az spring app create -n where-for-dinner-notify
-    az spring app create -n where-for-dinner-search
-    az spring app create -n where-for-dinner-search-proc
-    az spring app create -n where-for-dinner-ui
+    az spring app create -n availability
+    az spring app create -n crawler
+    az spring app create -n notify
+    az spring app create -n search
+    az spring app create -n search-proc
+    az spring app create -n app-ui
 ```
 
 * Create App Connections
 
 ```shell
-    az spring connection create servicebus --app where-for-dinner-availability --tg asa --namespace where-for-dinner --connection-string -g asa --client-type springBoot
-    az spring connection create servicebus --app where-for-dinner-notify --tg asa --namespace where-for-dinner --connection-string -g asa --client-type springBoot
+    az spring connection create servicebus --app availability --tg asa --namespace where-for-dinner --connection-string -g asa --client-type springBoot
+    az spring connection create servicebus --app notify --tg asa --namespace where-for-dinner --connection-string -g asa --client-type springBoot
 ```
 
 * Deploy Apps
 
 ```shell
-    az spring app deploy -n where-for-dinner-availability --source-path where-for-dinner-availability
-    az spring app deploy -n where-for-dinner-crawler --source-path where-for-dinner-crawler
-    az spring app deploy -n where-for-dinner-notify --source-path where-for-dinner-notify
-    az spring app deploy -n where-for-dinner-search --source-path where-for-dinner-search
-    az spring app deploy -n where-for-dinner-search-proc --source-path where-for-dinner-search-proc
-    az spring app deploy -n where-for-dinner-search-proc --source-path where-for-dinner-search-proc
-    az spring app deploy -n where-for-dinner-ui --source-path where-for-dinner-ui
+    az spring app deploy -n availability --source-path where-for-dinner-availability
+    az spring app deploy -n crawler --source-path where-for-dinner-crawler
+    az spring app deploy -n notify --source-path where-for-dinner-notify
+    az spring app deploy -n search --source-path where-for-dinner-search
+    az spring app deploy -n search-proc --source-path where-for-dinner-search-proc
+    az spring app deploy -n search-proc --source-path where-for-dinner-search-proc
+    az spring app deploy -n app-ui --source-path where-for-dinner-ui --build-env BP_WEB_SERVER=nginx BP_NODE_RUN_SCRIPTS=build BP_WEB_SERVER_ROOT=build BP_WEB_SERVER_ENABLE_PUSH_STATE=true
 ```
 
 * Define Gateway Routes
 
 ```shell
-    az spring gateway route-config create --name where-for-dinner_availability --app-name where-for-dinner-availability --routes-file routes/where-for-dinner_availability_route.json
-    az spring gateway route-config create --name where-for-dinner_search --app-name where-for-dinner-search --routes-file routes/where-for-dinner_search_route.json
-    az spring gateway route-config create --name where-for-dinner_ui --app-name where-for-dinner-ui --routes-file routes/where-for-dinner_ui_routes.json
+    az spring gateway route-config create --name availability-routes --app-name availability --routes-file routes/where-for-dinner_availability_route.json
+    az spring gateway route-config create --name search-routes --app-name search --routes-file routes/where-for-dinner_search_route.json
+    az spring gateway route-config create --name app-ui-routes --app-name ui --routes-file routes/where-for-dinner_ui_routes.json
 ```

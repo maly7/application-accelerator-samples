@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.3</spring-cloud.version>
+		<spring.cloud.azure.version>4.4.1</spring.cloud.azure.version>
 		<feign-reactor.version>3.2.1</feign-reactor.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>
@@ -31,10 +32,10 @@
 		<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream</artifactId>
-        </dependency>	
+        </dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+			<groupId>com.azure.spring</groupId>
+			<artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -79,6 +80,13 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.azure.spring</groupId>
+				<artifactId>spring-cloud-azure-dependencies</artifactId>
+				<version>${spring.cloud.azure.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

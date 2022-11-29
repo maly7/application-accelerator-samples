@@ -1,7 +1,5 @@
 # Azure Spring Apps Deployment
 
-[//]: # (TODO: Remove 'where-for-dinner' from app names, it causes too long of deployment names)
-[//]: # (TODO: Figure out how to force web servers buildpack for ui)
 
 ## Prerequisites
 
@@ -19,7 +17,10 @@ This section provides a fast track installation of the "simplest" configuration 
 ```shell
     az servicebus namespace create --name where-for-dinner
     az servicebus topic create --namespace-name where-for-dinner --name where-for-dinner-search-result
+    az servicebus topic create --namespace-name where-for-dinner --name where-for-dinner-search-criteria
+    az servicebus topic subscription create --namespace-name where-for-dinner --topic-name where-for-dinner-search-result --name where-for-dinner-search-result-group
     az servicebus topic subscription create --namespace-name where-for-dinner --topic-name where-for-dinner-search-result --name where-for-dinner-notify-group
+    az servicebus topic subscription create --namespace-name where-for-dinner --topic-name where-for-dinner-search-criteria --name where-for-dinner-search-criteria-group
 ```
 
 * Create Apps
@@ -33,7 +34,7 @@ This section provides a fast track installation of the "simplest" configuration 
     az spring app create -n app-ui
 ```
 
-* Create App Connections
+* Create Service Connections
 
 ```shell
     az spring connection create servicebus --app availability --tg asa --namespace where-for-dinner --connection-string -g asa --client-type springBoot
@@ -47,7 +48,6 @@ This section provides a fast track installation of the "simplest" configuration 
     az spring app deploy -n crawler --source-path where-for-dinner-crawler
     az spring app deploy -n notify --source-path where-for-dinner-notify
     az spring app deploy -n search --source-path where-for-dinner-search
-    az spring app deploy -n search-proc --source-path where-for-dinner-search-proc
     az spring app deploy -n search-proc --source-path where-for-dinner-search-proc
     az spring app deploy -n app-ui --source-path where-for-dinner-ui --build-env BP_WEB_SERVER=nginx BP_NODE_RUN_SCRIPTS=build BP_WEB_SERVER_ROOT=build BP_WEB_SERVER_ENABLE_PUSH_STATE=true
 ```

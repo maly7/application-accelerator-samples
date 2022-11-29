@@ -1,13 +1,11 @@
 [
   {
     "predicates": [
-      "Host=where-for-dinner**.**",
       "Path=/diningsearch"
     ]
   },
   {
     "predicates": [
-      "Host=where-for-dinner**.**",
       "Path=/**"
     ]
   }

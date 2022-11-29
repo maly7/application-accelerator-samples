@@ -1,8 +1,7 @@
 [
   {
     "predicates": [
-      "Path=/api/search/**",
-      "Host=where-for-dinner**.**"
+      "Path=/api/search/**"
     ],
     "filters": [
       "RewritePath=/api/search(?<segment>/?.*), $\\{segment}",

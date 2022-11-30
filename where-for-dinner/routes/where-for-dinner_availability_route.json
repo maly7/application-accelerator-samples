@@ -4,7 +4,7 @@
       "Path=/api/availability/**"
     ],
     "filters": [
-      "RewritePath=/api/availability(?<segment>/?.*), $\\{segment}",
+      "StripPrefix=2",
       "RemoveRequestHeader=Forwarded"
     ],
     "tokenRelay": true

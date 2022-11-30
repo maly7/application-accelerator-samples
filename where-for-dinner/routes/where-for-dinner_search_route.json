@@ -4,7 +4,7 @@
       "Path=/api/search/**"
     ],
     "filters": [
-      "RewritePath=/api/search(?<segment>/?.*), $\\{segment}",
+      "StripPrefix=2",
       "RemoveRequestHeader=Forwarded"
     ],
     "tokenRelay": true

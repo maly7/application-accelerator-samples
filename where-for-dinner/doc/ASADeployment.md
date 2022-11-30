@@ -1,6 +1,5 @@
 # Azure Spring Apps Deployment
 
-
 ## Prerequisites
 
 These instructions assume that you have an Azure Spring Apps Enterprise Tier service already provisioned
@@ -10,7 +9,15 @@ These instructions assume that you have an Azure Spring Apps Enterprise Tier ser
 
 ## Quick Start
 
-This section provides a fast track installation of the "simplest" configuration of the Hungry application using the application accelerator and the instructions immediately below.  A more thorough description of the configuration and installation scenarios are describes in subsequent sections of this page
+This section provides a fast track installation of the "simplest" configuration of the Hungry application using the
+application accelerator and the instructions immediately below. A more thorough description of the configuration and
+installation scenarios are describes in subsequent sections of this page
+
+* Configure Azure CLI defaults to shorten commands
+
+```shell
+az configure --defaults group=$RESOURCE_GROUP location=$LOCATION spring=$ASA_INSTANCE_NAME
+```
 
 * Provision Azure Service Bus:
 
@@ -37,8 +44,10 @@ This section provides a fast track installation of the "simplest" configuration 
 * Create Service Connections
 
 ```shell
-    az spring connection create servicebus --app availability --tg asa --namespace where-for-dinner --connection-string -g asa --client-type springBoot
-    az spring connection create servicebus --app notify --tg asa --namespace where-for-dinner --connection-string -g asa --client-type springBoot
+    az spring connection create servicebus --app availability --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection availability_servicebus
+    az spring connection create servicebus --app notify --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection notify_servicebus
+    az spring connection create servicebus --app search --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection search_servicebus
+    az spring connection create servicebus --app search-proc --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection search-proc_servicebus
 ```
 
 * Deploy Apps
@@ -57,5 +66,20 @@ This section provides a fast track installation of the "simplest" configuration 
 ```shell
     az spring gateway route-config create --name availability-routes --app-name availability --routes-file routes/where-for-dinner_availability_route.json
     az spring gateway route-config create --name search-routes --app-name search --routes-file routes/where-for-dinner_search_route.json
-    az spring gateway route-config create --name app-ui-routes --app-name ui --routes-file routes/where-for-dinner_ui_routes.json
+    az spring gateway route-config create --name app-ui-routes --app-name app-ui --routes-file routes/where-for-dinner_ui_routes.json
+```
+
+* Access Application Using Spring Cloud Gateway
+
+```shell
+az spring gateway update --assign-endpoint true
+export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+    
+az spring gateway update \
+    --server-url "https://${GATEWAY_URL}" \
+    --allowed-origins "*" \
+    --allowed-methods "*" \
+    --allowed-headers "*" 
+    
+open $GATEWAY_URL
 ```
